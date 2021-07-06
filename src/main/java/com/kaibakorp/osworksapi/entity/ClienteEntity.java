@@ -3,6 +3,7 @@ package com.kaibakorp.osworksapi.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.boot.validation.*;
 
@@ -14,15 +15,18 @@ public class ClienteEntity {
     private Long id;
 
     @NotBlank
+    @Size(max = 60)
     @Column(name="Nome")
     private String nome;
 
     @NotBlank
+    @Size(max = 255)
     @Column(name="Email")
     @Email
     private String email;
 
     @NotBlank
+    @Size(max = 20)
     @Column(name="Telefone")
     private String tel;
 

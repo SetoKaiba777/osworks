@@ -1,5 +1,6 @@
 package com.kaibakorp.osworksapi.business;
 import com.kaibakorp.osworksapi.entity.ClienteEntity;
+import com.kaibakorp.osworksapi.exception.ServiceException;
 import com.kaibakorp.osworksapi.persistence.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,11 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public ClienteEntity addCliente(ClienteEntity entity) {
-        try {
-            return clienteRepository.save(entity);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+        ClienteEntity clienteExisits = clienteRepository.findByEmail(entity.getEmail());
+        if(clienteExisits!= null && !clienteExisits.equals(entity)){
+            throw new ServiceException("This email is already registered");
         }
+        return clienteRepository.save(entity);
     }
 
     public ResponseEntity<ClienteEntity> buscarCliente(Long id) {
