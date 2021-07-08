@@ -1,8 +1,8 @@
-package com.kaibakorp.osworksapi.controler;
+package com.kaibakorp.osworksapi.api.controler;
 
-import com.kaibakorp.osworksapi.business.ClienteService;
-import com.kaibakorp.osworksapi.entity.ClienteEntity;
-import com.kaibakorp.osworksapi.persistence.ClienteRepository;
+import com.kaibakorp.osworksapi.domain.business.ClienteService;
+import com.kaibakorp.osworksapi.domain.entity.ClienteEntity;
+import com.kaibakorp.osworksapi.domain.persistence.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

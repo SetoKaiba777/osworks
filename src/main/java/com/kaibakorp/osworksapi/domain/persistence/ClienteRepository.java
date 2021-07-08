@@ -1,11 +1,8 @@
-package com.kaibakorp.osworksapi.persistence;
+package com.kaibakorp.osworksapi.domain.persistence;
 
-import com.kaibakorp.osworksapi.entity.ClienteEntity;
+import com.kaibakorp.osworksapi.domain.entity.ClienteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Long> {

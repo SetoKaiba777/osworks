@@ -1,4 +1,4 @@
-package com.kaibakorp.osworksapi.exception;
+package com.kaibakorp.osworksapi.domain.exception;
 
 public class ServiceException extends RuntimeException {
     private static final long serialVersionUID = 1L;

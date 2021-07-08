@@ -1,17 +1,20 @@
-package com.kaibakorp.osworksapi.entity;
+package com.kaibakorp.osworksapi.domain.entity;
+
+import com.kaibakorp.osworksapi.domain.ValidationGroups;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.boot.validation.*;
 
 @Entity
 @Table(name="CLIENTE")
 public class ClienteEntity {
+
+    @NotNull(groups= ValidationGroups.ClienteId.class)
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank

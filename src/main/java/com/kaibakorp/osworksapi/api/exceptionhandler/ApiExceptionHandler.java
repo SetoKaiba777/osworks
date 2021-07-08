@@ -1,6 +1,6 @@
-package com.kaibakorp.osworksapi.exceptionhandler;
+package com.kaibakorp.osworksapi.api.exceptionhandler;
 
-import com.kaibakorp.osworksapi.exception.ServiceException;
+import com.kaibakorp.osworksapi.domain.exception.ServiceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 @ControllerAdvice
@@ -25,10 +26,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         problem.setStatus(status.value());
         problem.setTitle(ex.getMessage());
-        problem.setDateHour(LocalDateTime.now());
+        problem.setDateHour(OffsetDateTime.now());
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(),status,request);
     }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
@@ -43,7 +45,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         var problem = new Problem();
         problem.setStatus(status.value());
-        problem.setDateHour(LocalDateTime.now());
+        problem.setDateHour(OffsetDateTime.now());
         problem.setTitle("Um ou mais campos estão preenchidos indevidamente");
         problem.setFields(fields);
         return super.handleExceptionInternal(ex,problem, headers,status,request);
