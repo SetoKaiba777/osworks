@@ -1,17 +1,14 @@
-package com.kaibakorp.osworksapi.domain.entity;
+package com.kaibakorp.osworksapi.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kaibakorp.osworksapi.domain.ValidationGroups;
+import com.kaibakorp.osworksapi.api.rpmodel.CommentEntity;
+import com.kaibakorp.osworksapi.domain.enum_class.OSstatus;
+import com.kaibakorp.osworksapi.domain.exception.ServiceException;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="OS")
@@ -20,33 +17,28 @@ public class OSEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Valid
-    @ConvertGroup(from= Default.class, to = ValidationGroups.ClienteId.class)
-    @NotNull
     @ManyToOne
     private ClienteEntity cliente;
 
-    @NotBlank
     @Column(name="Description")
     private String description;
 
-    @NotNull
+
     @Column(name="Price")
     private BigDecimal price;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name="Status")
     @Enumerated(EnumType.STRING)
     private OSstatus status;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name="Finish_Date")
     private OffsetDateTime finishDate;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name="Opening_Date")
     private OffsetDateTime openDate;
 
+    @OneToMany(mappedBy = "os")
+    private List<CommentEntity> commentEntities = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -102,5 +94,25 @@ public class OSEntity {
 
     public void setOpenDate(OffsetDateTime openDate) {
         this.openDate = openDate;
+    }
+
+    public List<CommentEntity> getComments() {
+        return commentEntities;
+    }
+
+    public void setComments(List<CommentEntity> commentEntities) {
+        this.commentEntities = commentEntities;
+    }
+
+    public boolean canBeFinished(){
+        return OSstatus.OPEN.equals(getStatus());
+    }
+
+    public void finish(){
+        if(!canBeFinished()){
+            throw new ServiceException("Service Order can't be cancelled");
+        }
+        setStatus(OSstatus.FINISHED);
+        setFinishDate(OffsetDateTime.now());
     }
 }

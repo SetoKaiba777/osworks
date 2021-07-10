@@ -1,45 +1,23 @@
-package com.kaibakorp.osworksapi.domain.entity;
+package com.kaibakorp.osworksapi.api.rpmodel;
 
-import com.kaibakorp.osworksapi.domain.ValidationGroups;
-
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity
-@Table(name="CLIENTE")
-public class ClienteEntity {
-
-    @NotNull(groups= ValidationGroups.ClienteId.class)
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class ClienteEntityInput {
     @NotBlank
     @Size(max = 60)
-    @Column(name="Nome")
     private String nome;
 
     @NotBlank
     @Size(max = 255)
-    @Column(name="Email")
     @Email
     private String email;
 
     @NotBlank
     @Size(max = 20)
-    @Column(name="Telefone")
-    private String tel;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+     private String tel;
 
     public String getNome() {
         return nome;

@@ -1,5 +1,5 @@
 package com.kaibakorp.osworksapi.domain.business;
-import com.kaibakorp.osworksapi.domain.entity.ClienteEntity;
+import com.kaibakorp.osworksapi.domain.model.ClienteEntity;
 import com.kaibakorp.osworksapi.domain.exception.ServiceException;
 import com.kaibakorp.osworksapi.domain.persistence.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,6 @@ public class ClienteService {
             throw new ServiceException("This email is already registered");
         }
         return clienteRepository.save(entity);
-    }
-
-    public ResponseEntity<ClienteEntity> buscarCliente(Long id) {
-        Optional<ClienteEntity> cliente = clienteRepository.findById(id);
-        if(cliente.isPresent()){
-            return ResponseEntity.ok(cliente.get());
-        }
-        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<ClienteEntity> atualizarCliente(Long id, ClienteEntity cliente) {

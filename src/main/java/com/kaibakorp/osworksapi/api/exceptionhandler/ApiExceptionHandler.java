@@ -1,5 +1,6 @@
 package com.kaibakorp.osworksapi.api.exceptionhandler;
 
+import com.kaibakorp.osworksapi.domain.exception.DontFoundEntityException;
 import com.kaibakorp.osworksapi.domain.exception.ServiceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,15 +23,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<Object> handleServiceException(ServiceException ex, WebRequest request){
         var status = HttpStatus.BAD_REQUEST;
-        var problem = new Problem();
-
-        problem.setStatus(status.value());
-        problem.setTitle(ex.getMessage());
-        problem.setDateHour(OffsetDateTime.now());
-
+        Problem problem = problemSet(ex.getMessage(),status);
         return handleExceptionInternal(ex, problem, new HttpHeaders(),status,request);
     }
 
+    @ExceptionHandler(DontFoundEntityException.class)
+    public ResponseEntity<Object> handleDontFoundEntity(DontFoundEntityException ex, WebRequest request){
+        var status = HttpStatus.NOT_FOUND;
+        Problem problem = problemSet(ex.getMessage(),status);
+        return handleExceptionInternal(ex, problem, new HttpHeaders(),status,request);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
@@ -49,5 +51,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         problem.setTitle("Um ou mais campos estão preenchidos indevidamente");
         problem.setFields(fields);
         return super.handleExceptionInternal(ex,problem, headers,status,request);
+    }
+
+    private Problem problemSet(String msg, HttpStatus status){
+        var problem = new Problem();
+        problem.setStatus(status.value());
+        problem.setTitle(msg);
+        problem.setDateHour(OffsetDateTime.now());
+        return problem;
     }
 }
